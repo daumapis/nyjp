@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+
+	<!-- 실 운영서버 -->
+	<bean id="commonDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+ 	  	<property name="url" value="jdbc:mysql://localhost:3306/nyjpDB?characterSetResults=utf8&amp;characterEncoding=utf8&amp;useUnicode=true" />  
+		<property name="username" value="kobchang" />
+		<property name="password" value="gg" />
+		<property name="maxActive" value="50" />
+		<property name="maxIdle" value="5" />
+		<property name="validationQuery" value="SELECT 1" />
+		<property name="testOnBorrow" value="true" />
+		<property name="testWhileIdle" value="true" />
+		<property name="timeBetweenEvictionRunsMillis" value="10000" />
+		<property name="minEvictableIdleTimeMillis" value="60000" />
+	</bean>
+	
+	<bean id="commonSqlMapClientFactory" class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
+		<property name="configLocation" value="classpath:net/daum/nyjp/dao/CommonSqlMapConfig.xml"/>
+		<property name="dataSource" ref="commonDataSource"/>
+	</bean>
+
+	<bean id="commonDAO" class="net.daum.nyjp.dao.CommonDAOImpl" singleton="true">
+		<property name="sqlMapClient" ref="commonSqlMapClientFactory"/>
+	</bean>
+	
+	
+	
+	
+</beans>
